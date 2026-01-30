@@ -5,9 +5,12 @@ void main(List<String> args) {
 }
 
 class MainPageStateless extends StatelessWidget {
+  const MainPageStateless({super.key});
+
 
   @override
   Widget build(BuildContext context) {
+    print('无状态，被创建');
     return MaterialApp(
       title: '无状态组件',
       home: Scaffold(
