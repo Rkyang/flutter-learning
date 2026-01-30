@@ -19,12 +19,22 @@ class MainPageStateless extends StatelessWidget {
         ),
         body: Container(
           alignment: Alignment.center,
-          child: Text('center'),
+          child: GestureDetector(
+            child: Text('中间'),
+            onTap: () {
+              print('点中间了');
+            },
+          ),
         ),
         bottomNavigationBar: Container(
           alignment: Alignment.center,
           height: 80,
-          child: Text('bottom'),
+          child: TextButton(
+            onPressed: () {
+              print('按钮被点击了');
+            },
+            child: Text('底部按钮'),
+          ),
         ),
       ),
     );
