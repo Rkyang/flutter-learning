@@ -12,7 +12,7 @@ class MainPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Column组件'),
+          title: Text('Row组件'),
           centerTitle: true,
         ),
         body: Container(

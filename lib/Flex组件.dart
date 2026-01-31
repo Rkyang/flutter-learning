@@ -11,7 +11,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Column组件'), centerTitle: true),
+        appBar: AppBar(title: Text('Flex组件'), centerTitle: true),
         body: Container(
           width: double.infinity,
           height: double.infinity,
