@@ -45,10 +45,11 @@ class _ListPageState extends State<ListPage> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // 基本路由页面跳转
-              Navigator.push(
+              // 命名路由页面跳转，附带路由参数
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(builder: (context) => DetailPage()),
+                '/detail',
+                arguments: {"id": index + 1},
               );
             },
             child: Container(
@@ -78,15 +79,40 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  String _id = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // 在异步微任务中获取命名路由参数
+    Future.microtask(() {
+      if (ModalRoute.of(context) != null) {
+        Map<String, dynamic> params =
+            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        // 参数传递时是什么类型，接收时要进行处理，否则报错
+        _id = params['id'].toString();
+        // 刷新数据状态
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Detail Page'), centerTitle: true),
-      body: TextButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text('Back'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("详情${_id}", style: TextStyle(fontSize: 20)),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Back'),
+          ),
+        ],
       ),
     );
   }
