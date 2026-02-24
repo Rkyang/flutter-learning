@@ -40,7 +40,9 @@ class _ListPageState extends State<ListPage> {
               // 基本路由页面跳转
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DetailPage()),
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(id: index + 1),
+                ),
               );
             },
             child: Container(
@@ -63,7 +65,10 @@ class _ListPageState extends State<ListPage> {
 
 // 二级页面
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  // 基本路由传参
+  final int? id;
+
+  const DetailPage({super.key, required this.id});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -71,14 +76,28 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   @override
+  void initState() {
+    super.initState();
+    // 可以直接使用widget获取
+    // print(widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Detail Page'), centerTitle: true),
-      body: TextButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text('Back'),
+      body: Center(
+        child: Column(
+          children: [
+            Text("详情${widget.id}", style: TextStyle(fontSize: 20)),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Back'),
+            ),
+          ],
+        ),
       ),
     );
   }
