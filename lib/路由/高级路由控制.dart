@@ -25,6 +25,10 @@ class MainPage extends StatelessWidget {
           }
         }
       },
+      // 路由表中不存在，也未在onGenerateRoute中处理，会进入这里，通常放404页面
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (context) => NotFound());
+      },
     );
   }
 }
@@ -47,7 +51,8 @@ class _GoodListState extends State<GoodList> {
       ),
       body: Center(
         child: TextButton(onPressed: (){
-          Navigator.pushNamed(context, '/cartList');
+          // Navigator.pushNamed(context, '/cartList');
+          Navigator.pushNamed(context, '/111');
         }, child: Text('加入购物车', style: TextStyle(fontSize: 20),)),
       ),
     );
@@ -96,6 +101,18 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: TextButton(onPressed: (){}, child: Text('登录', style: TextStyle(fontSize: 20),)),
       ),
+    );
+  }
+}
+
+// 404
+class NotFound extends StatelessWidget {
+  const NotFound({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Image(image: AssetImage('lib/images/img1.jpg'), width: 200, height: 200,),
     );
   }
 }
