@@ -1,7 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/viewmodels/home.dart';
 
 class Carousel extends StatefulWidget {
-  const Carousel({super.key});
+  final List<BannerItem> bannerItems;
+
+  const Carousel({super.key, required this.bannerItems});
 
   @override
   State<Carousel> createState() => _CarouselState();
@@ -10,11 +14,24 @@ class Carousel extends StatefulWidget {
 class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      alignment: Alignment.center,
-      color: Colors.blue,
-      child: Text('轮播图', style: TextStyle(fontSize: 30, color: Colors.black),),
+    return Stack(children: [_getSlider()]);
+  }
+
+  /// 获取轮播图
+  Widget _getSlider() {
+    return CarouselSlider(
+      items: List.generate(widget.bannerItems.length, (index) {
+        return Image.network(
+          widget.bannerItems[index].imgUrl,
+          fit: BoxFit.cover,
+          width: MediaQuery.of(context).size.width,
+        );
+      }),
+      options: CarouselOptions(
+        viewportFraction: 1,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+      ),
     );
   }
 }

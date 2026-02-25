@@ -4,6 +4,7 @@ import 'package:flutter_learning/components/home/carousel.dart';
 import 'package:flutter_learning/components/home/hot.dart';
 import 'package:flutter_learning/components/home/product.dart';
 import 'package:flutter_learning/components/home/recommend.dart';
+import 'package:flutter_learning/viewmodels/home.dart';
 
 /// 首页
 class HomeView extends StatefulWidget {
@@ -14,6 +15,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  // 定义轮播图使用的数据
+  final List<BannerItem> _bannerDataList = [
+    BannerItem(id: '0', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg'),
+    BannerItem(id: '1', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png'),
+    BannerItem(id: '2', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: _getSlivers());
@@ -23,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> _getSlivers() {
     return [
       // 轮播图
-      SliverToBoxAdapter(child: Carousel()),
+      SliverToBoxAdapter(child: Carousel(bannerItems: _bannerDataList,)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 横向滚动分类
       SliverToBoxAdapter(child: Category()),
