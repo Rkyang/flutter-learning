@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/api/home.dart';
 import 'package:flutter_learning/components/home/category.dart';
 import 'package:flutter_learning/components/home/carousel.dart';
 import 'package:flutter_learning/components/home/hot.dart';
@@ -15,24 +16,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   // 定义轮播图使用的数据
-  final List<BannerItem> _bannerDataList = [
-    BannerItem(id: '0', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg'),
-    BannerItem(id: '1', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png'),
-    BannerItem(id: '2', imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg'),
-  ];
+  List<BannerItem> _bannerDataList = [];
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: _getSlivers());
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _getBannerList();
+  }
+
+  void _getBannerList() async {
+    _bannerDataList = await getBannerListApi();
+    setState(() {});
+  }
+
   /// 获取滚动容器的内容
   List<Widget> _getSlivers() {
     return [
       // 轮播图
-      SliverToBoxAdapter(child: Carousel(bannerItems: _bannerDataList,)),
+      SliverToBoxAdapter(child: Carousel(bannerItems: _bannerDataList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 横向滚动分类
       SliverToBoxAdapter(child: Category()),
@@ -46,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
           direction: Axis.horizontal,
           children: [
             Expanded(child: Hot()),
-            SizedBox(width: 10,),
+            SizedBox(width: 10),
             Expanded(child: Hot()),
           ],
         ),
