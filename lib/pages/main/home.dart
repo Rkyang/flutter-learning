@@ -18,6 +18,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   // 定义轮播图使用的数据
   List<BannerItem> _bannerDataList = [];
+  // 获取分类数据
+  List<CategoryItem> _categoryDataList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +29,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    _getBannerList();
+    _getInitData();
   }
 
-  void _getBannerList() async {
+  void _getInitData() async {
     _bannerDataList = await getBannerListApi();
+    _categoryDataList = await getCategoryListApi();
     setState(() {});
   }
 
@@ -42,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: Carousel(bannerItems: _bannerDataList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 横向滚动分类
-      SliverToBoxAdapter(child: Category()),
+      SliverToBoxAdapter(child: Category(categoryList: _categoryDataList,)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 推荐区域
       SliverToBoxAdapter(child: Recommend()),

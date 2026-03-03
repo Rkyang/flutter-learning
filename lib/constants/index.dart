@@ -11,4 +11,5 @@ class GlobalConstants {
 /// 请求路径常量
 class HttpUrlConstants {
   static const String bannerList = '/home/banner';
+  static const String categoryList = '/home/category/head';
 }
