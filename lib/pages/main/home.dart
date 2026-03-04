@@ -20,6 +20,12 @@ class _HomeViewState extends State<HomeView> {
   List<BannerItem> _bannerDataList = [];
   // 获取分类数据
   List<CategoryItem> _categoryDataList = [];
+  // 获取特惠推荐数据
+  SpecialOfferResult _specialOfferDataList = SpecialOfferResult(
+    id: '',
+    title: '',
+    subTypes: [],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,7 @@ class _HomeViewState extends State<HomeView> {
   void _getInitData() async {
     _bannerDataList = await getBannerListApi();
     _categoryDataList = await getCategoryListApi();
+    _specialOfferDataList = await getSpecialOfferApi();
     setState(() {});
   }
 
@@ -45,10 +52,12 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: Carousel(bannerItems: _bannerDataList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 横向滚动分类
-      SliverToBoxAdapter(child: Category(categoryList: _categoryDataList,)),
+      SliverToBoxAdapter(child: Category(categoryList: _categoryDataList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 推荐区域
-      SliverToBoxAdapter(child: Recommend()),
+      SliverToBoxAdapter(
+        child: Recommend(specialOfferResult: _specialOfferDataList),
+      ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 爆款区域
       SliverToBoxAdapter(

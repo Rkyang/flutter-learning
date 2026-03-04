@@ -10,6 +10,7 @@ class GlobalConstants {
 
 /// 请求路径常量
 class HttpUrlConstants {
-  static const String bannerList = '/home/banner';
-  static const String categoryList = '/home/category/head';
+  static const String bannerList = '/home/banner'; // 轮播图
+  static const String categoryList = '/home/category/head'; // 分类
+  static const String productList = '/hot/preference'; // 特惠推荐
 }

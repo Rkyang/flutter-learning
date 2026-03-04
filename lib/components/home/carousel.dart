@@ -40,7 +40,7 @@ class _CarouselState extends State<Carousel> {
       options: CarouselOptions(
         viewportFraction: 1,
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 3),
+        autoPlayInterval: Duration(seconds: 5),
         onPageChanged: (index, reason) {
           setState(() {
             _currentSilderIndex = index;
