@@ -13,4 +13,6 @@ class HttpUrlConstants {
   static const String bannerList = '/home/banner'; // 轮播图
   static const String categoryList = '/home/category/head'; // 分类
   static const String productList = '/hot/preference'; // 特惠推荐
+  static const String hotList = '/hot/inVogue'; // 爆款推荐
+  static const String allInOne = '/hot/oneStop'; // 一站买全
 }

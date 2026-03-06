@@ -21,3 +21,13 @@ Future<List<CategoryItem>> getCategoryListApi() async {
 Future<SpecialOfferResult> getSpecialOfferApi() async {
   return SpecialOfferResult.formJSON(await dioUtil.get(HttpUrlConstants.productList));
 }
+
+// 爆款推荐
+Future<SpecialOfferResult> getHotProductApi() async {
+  return SpecialOfferResult.formJSON(await dioUtil.get(HttpUrlConstants.hotList));
+}
+
+// 一站买全
+Future<SpecialOfferResult> getAllInOneApi() async {
+  return SpecialOfferResult.formJSON(await dioUtil.get(HttpUrlConstants.allInOne));
+}

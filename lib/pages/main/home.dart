@@ -26,6 +26,18 @@ class _HomeViewState extends State<HomeView> {
     title: '',
     subTypes: [],
   );
+  // 获取爆款推荐数据
+  SpecialOfferResult _hotDataList = SpecialOfferResult(
+    id: '',
+    title: '',
+    subTypes: []
+  );
+  // 获取一站买全推荐数据
+  SpecialOfferResult _allInOneDataList = SpecialOfferResult(
+    id: '',
+    title: '',
+    subTypes: []
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +54,8 @@ class _HomeViewState extends State<HomeView> {
     _bannerDataList = await getBannerListApi();
     _categoryDataList = await getCategoryListApi();
     _specialOfferDataList = await getSpecialOfferApi();
+    _hotDataList = await getHotProductApi();
+    _allInOneDataList = await getAllInOneApi();
     setState(() {});
   }
 
@@ -64,9 +78,23 @@ class _HomeViewState extends State<HomeView> {
         child: Flex(
           direction: Axis.horizontal,
           children: [
-            Expanded(child: Hot()),
+            Expanded(
+              child: Hot(
+                mainTitle: '爆款推荐',
+                subTitle: '最受欢迎',
+                backgroundColor: const Color.fromARGB(255, 204, 228, 240),
+                hotList: _hotDataList,
+              ),
+            ),
             SizedBox(width: 10),
-            Expanded(child: Hot()),
+            Expanded(
+              child: Hot(
+                mainTitle: '一站买全',
+                subTitle: '精心优选',
+                backgroundColor: const Color.fromARGB(255, 244, 248, 218),
+                hotList: _allInOneDataList,
+              ),
+            ),
           ],
         ),
       ),
