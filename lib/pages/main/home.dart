@@ -5,6 +5,7 @@ import 'package:flutter_learning/components/home/carousel.dart';
 import 'package:flutter_learning/components/home/hot.dart';
 import 'package:flutter_learning/components/home/product.dart';
 import 'package:flutter_learning/components/home/recommend.dart';
+import 'package:flutter_learning/utils/ToastUtils.dart';
 import 'package:flutter_learning/viewmodels/home.dart';
 
 /// 首页
@@ -51,9 +52,12 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: _getSlivers(),
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: _getSlivers(),
+      ),
     );
   }
 
@@ -121,7 +125,7 @@ class _HomeViewState extends State<HomeView> {
 
   // 获取推荐列表数据
   void _getRecommendList() async {
-    if(_hasExecuteReq || !_hasMoreData) {
+    if (_hasExecuteReq || !_hasMoreData) {
       // 存在执行中请求或者没有更多数据了
       return;
     }
@@ -130,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
     _recommendList = await getRecommendListApi({'limit': currentLimit});
     _hasExecuteReq = false;
     setState(() {});
-    if(_recommendList.length < currentLimit) {
+    if (_recommendList.length < currentLimit) {
       _hasMoreData = false;
       return;
     }
@@ -147,5 +151,15 @@ class _HomeViewState extends State<HomeView> {
         _getRecommendList();
       }
     });
+  }
+
+  // 下拉刷新
+  Future<void> _onRefresh() async {
+    _currentPage = 1;
+    _hasExecuteReq = false;
+    _hasMoreData = true;
+    _getInitData();
+    // 提示消息
+    ToastUtils.showToast(context, '刷新成功');
   }
 }
