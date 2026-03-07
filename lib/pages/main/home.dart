@@ -18,32 +18,43 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   // 定义轮播图使用的数据
   List<BannerItem> _bannerDataList = [];
-  // 获取分类数据
+  // 分类数据
   List<CategoryItem> _categoryDataList = [];
-  // 获取特惠推荐数据
+  // 特惠推荐数据
   SpecialOfferResult _specialOfferDataList = SpecialOfferResult(
     id: '',
     title: '',
     subTypes: [],
   );
-  // 获取爆款推荐数据
+  // 爆款推荐数据
   SpecialOfferResult _hotDataList = SpecialOfferResult(
     id: '',
     title: '',
-    subTypes: []
+    subTypes: [],
   );
-  // 获取一站买全推荐数据
+  // 一站买全推荐数据
   SpecialOfferResult _allInOneDataList = SpecialOfferResult(
     id: '',
     title: '',
-    subTypes: []
+    subTypes: [],
   );
-  // 获取推荐列表数据
+  // 推荐列表数据
   List<GoodsDetailItem> _recommendList = [];
+  // 屏幕滚动controller
+  final ScrollController _scrollController = ScrollController();
+  // 无限滚动当前页码
+  int _currentPage = 1;
+  // 无限滚动是否存在执行中请求
+  bool _hasExecuteReq = false;
+  // 无限滚动是否还有数据
+  bool _hasMoreData = true;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: _getSlivers());
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: _getSlivers(),
+    );
   }
 
   @override
@@ -58,7 +69,8 @@ class _HomeViewState extends State<HomeView> {
     _specialOfferDataList = await getSpecialOfferApi();
     _hotDataList = await getHotProductApi();
     _allInOneDataList = await getAllInOneApi();
-    _recommendList = await getRecommendListApi({'limit': 10});
+    _getRecommendList();
+    _screenMonitor();
     setState(() {});
   }
 
@@ -103,7 +115,37 @@ class _HomeViewState extends State<HomeView> {
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 商品滚动区域
-      Product(goodsItem: _recommendList,),
+      Product(goodsItem: _recommendList),
     ];
+  }
+
+  // 获取推荐列表数据
+  void _getRecommendList() async {
+    if(_hasExecuteReq || !_hasMoreData) {
+      // 存在执行中请求或者没有更多数据了
+      return;
+    }
+    _hasExecuteReq = true;
+    int currentLimit = _currentPage * 10;
+    _recommendList = await getRecommendListApi({'limit': currentLimit});
+    _hasExecuteReq = false;
+    setState(() {});
+    if(_recommendList.length < currentLimit) {
+      _hasMoreData = false;
+      return;
+    }
+    _currentPage++;
+  }
+
+  // 监听屏幕滚动
+  void _screenMonitor() {
+    _scrollController.addListener(() {
+      // _scrollController.position.maxScrollExtent: 滚动到底部的最大距离
+      // _scrollController.position.pixels: 滚动的距离
+      if (_scrollController.position.pixels >
+          (_scrollController.position.maxScrollExtent - 100)) {
+        _getRecommendList();
+      }
+    });
   }
 }
