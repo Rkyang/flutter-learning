@@ -31,3 +31,11 @@ Future<SpecialOfferResult> getHotProductApi() async {
 Future<SpecialOfferResult> getAllInOneApi() async {
   return SpecialOfferResult.formJSON(await dioUtil.get(HttpUrlConstants.allInOne));
 }
+
+// 推荐列表
+Future<List<GoodsDetailItem>> getRecommendListApi(Map<String, dynamic> params) async {
+  List<dynamic> resp = await dioUtil.get(HttpUrlConstants.recommendList, params: params) as List<dynamic>; 
+  return resp.map((item) {
+    return GoodsDetailItem.formJSON(item as Map<String, dynamic>);
+  }).toList();
+}

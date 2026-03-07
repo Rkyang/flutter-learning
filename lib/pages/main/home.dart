@@ -38,6 +38,8 @@ class _HomeViewState extends State<HomeView> {
     title: '',
     subTypes: []
   );
+  // 获取推荐列表数据
+  List<GoodsDetailItem> _recommendList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,7 @@ class _HomeViewState extends State<HomeView> {
     _specialOfferDataList = await getSpecialOfferApi();
     _hotDataList = await getHotProductApi();
     _allInOneDataList = await getAllInOneApi();
+    _recommendList = await getRecommendListApi({'limit': 10});
     setState(() {});
   }
 
@@ -100,7 +103,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 商品滚动区域
-      Product(),
+      Product(goodsItem: _recommendList,),
     ];
   }
 }

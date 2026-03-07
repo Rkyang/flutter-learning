@@ -15,4 +15,5 @@ class HttpUrlConstants {
   static const String productList = '/hot/preference'; // 特惠推荐
   static const String hotList = '/hot/inVogue'; // 爆款推荐
   static const String allInOne = '/hot/oneStop'; // 一站买全
+  static const String recommendList = '/home/recommend'; // 推荐列表
 }

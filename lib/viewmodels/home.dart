@@ -131,3 +131,28 @@ class SpecialOfferResult {
     );
   }
 }
+
+// 推荐列表
+class GoodsDetailItem extends GoodsItem {
+  int payCount = 0;
+  // 商品详情项
+  GoodsDetailItem({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.picture,
+    required super.orderNum,
+    required this.payCount,
+  }) : super(desc: "");
+  // 转化方法
+  factory GoodsDetailItem.formJSON(Map<String, dynamic> json) {
+    return GoodsDetailItem(
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      price: json['price']?.toString() ?? '',
+      picture: json['picture']?.toString() ?? '',
+      orderNum: int.tryParse(json['orderNum']?.toString() ?? '0') ?? 0,
+      payCount: int.tryParse(json['payCount']?.toString() ?? '0') ?? 0
+    );
+  }
+}
