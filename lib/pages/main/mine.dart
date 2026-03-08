@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/api/mine.dart';
 import 'package:flutter_learning/components/home/product.dart';
-import 'package:flutter_learning/components/home/recommend.dart';
 import 'package:flutter_learning/components/mine/Guess.dart';
+import 'package:flutter_learning/stores/UserController.dart';
 import 'package:flutter_learning/viewmodels/home.dart';
+import 'package:get/get.dart';
 
 class MineView extends StatefulWidget {
   const MineView({super.key});
@@ -18,6 +19,7 @@ class _MineViewState extends State<MineView> {
   bool _isLoading = false;
   bool _hasMore = true;
   final ScrollController _scrollController = ScrollController();
+  final UserController _userController = Get.put(UserController());
 
   Widget _getLogout() {
     return GestureDetector(
@@ -57,24 +59,41 @@ class _MineViewState extends State<MineView> {
       padding: const EdgeInsets.only(left: 20, right: 40, top: 80, bottom: 20),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 26,
-            backgroundImage: AssetImage("lib/assets/goods_avatar.png"),
-          ),
+          Obx(() {
+            return CircleAvatar(
+              radius: 26,
+              backgroundImage: _userController.user.value.avatar.isNotEmpty
+                  ? NetworkImage(_userController.user.value.avatar)
+                  : AssetImage("lib/assets/goods_avatar.png"),
+              // backgroundImage: AssetImage("lib/assets/goods_avatar.png"),
+            );
+          }),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: const Text(
-                    "登录",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                Obx(() {
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigator.pushNamed(context, '/login');
+                      if(_userController.user.value.id.isNotEmpty) {
+                        return;
+                      } else {
+                        Navigator.pushNamed(context, '/login');
+                      }
+                    },
+                    child: Text(
+                      _userController.user.value.id.isNotEmpty
+                          ? _userController.user.value.nickname
+                          : '登录',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }),
               ],
             ),
           ),

@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/api/user.dart';
+import 'package:flutter_learning/stores/UserController.dart';
 import 'package:flutter_learning/utils/ToastUtils.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
+  final UserController _usercontroller = Get.find();
+
   Widget _buildPhoneTextField() {
     return TextFormField(
       validator: (value) {
@@ -68,10 +72,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _login() async {
     try {
-      await login({
+      final res = await login({
         "account": _phoneController.text,
         "password": _codeController.text,
       });
+      // 更新getx共享用户信息
+      _usercontroller.updateUserInfo(res);
       ToastUtils.showToast(context, "登录成功");
       Navigator.of(context).pop(); // 返回上个页面
     } catch (e) {
