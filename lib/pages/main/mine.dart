@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learning/api/mine.dart';
 import 'package:flutter_learning/components/home/product.dart';
 import 'package:flutter_learning/components/mine/Guess.dart';
+import 'package:flutter_learning/stores/TokenManager.dart';
 import 'package:flutter_learning/stores/UserController.dart';
 import 'package:flutter_learning/viewmodels/home.dart';
+import 'package:flutter_learning/viewmodels/user.dart';
 import 'package:get/get.dart';
 
 class MineView extends StatefulWidget {
@@ -22,29 +24,42 @@ class _MineViewState extends State<MineView> {
   final UserController _userController = Get.find();
 
   Widget _getLogout() {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("确认退出登录吗？"),
-              content: const Text("确认退出登录吗？"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
+    return Obx(() {
+      return _userController.user.value.id.isNotEmpty
+          ? GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("确认退出登录吗？"),
+                      content: const Text("确认退出登录吗？"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("取消"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await tokenManager.removeToken();
+                            _userController.updateUserInfo(
+                              UserInfo.fromJSON({}),
+                            );
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("确认"),
+                        ),
+                      ],
+                    );
                   },
-                  child: const Text("取消"),
-                ),
-                TextButton(onPressed: () {}, child: const Text("确认")),
-              ],
-            );
-          },
-        );
-      },
-      child: const Text("退出"),
-    );
+                );
+              },
+              child: const Text("退出"),
+            )
+          : Text('');
+    });
   }
 
   Widget _buildHeader() {
@@ -77,7 +92,7 @@ class _MineViewState extends State<MineView> {
                   return GestureDetector(
                     onTap: () {
                       // Navigator.pushNamed(context, '/login');
-                      if(_userController.user.value.id.isNotEmpty) {
+                      if (_userController.user.value.id.isNotEmpty) {
                         return;
                       } else {
                         Navigator.pushNamed(context, '/login');
@@ -97,6 +112,7 @@ class _MineViewState extends State<MineView> {
               ],
             ),
           ),
+          _getLogout(),
         ],
       ),
     );

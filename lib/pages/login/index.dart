@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learning/api/user.dart';
 import 'package:flutter_learning/stores/TokenManager.dart';
 import 'package:flutter_learning/stores/UserController.dart';
+import 'package:flutter_learning/utils/LoadingDialog.dart';
 import 'package:flutter_learning/utils/ToastUtils.dart';
 import 'package:get/get.dart';
 
@@ -73,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _login() async {
     try {
+      LoadingDialog.show(context, message: '登录中...');
       final res = await login({
         "account": _phoneController.text,
         "password": _codeController.text,
@@ -85,6 +87,8 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop(); // 返回上个页面
     } catch (e) {
       ToastUtils.showToast(context, (e as DioException).message ?? '登录失败');
+    } finally {
+      LoadingDialog.hide(context);
     }
   }
 
