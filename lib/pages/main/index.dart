@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/api/user.dart';
 import 'package:flutter_learning/pages/main/cart.dart';
 import 'package:flutter_learning/pages/main/category.dart';
 import 'package:flutter_learning/pages/main/home.dart';
 import 'package:flutter_learning/pages/main/mine.dart';
+import 'package:flutter_learning/stores/TokenManager.dart';
+import 'package:flutter_learning/stores/UserController.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,6 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   // 定义下方tab栏资源数据
   final List<Map<String, String>> _tabDataList = [
     {
@@ -62,6 +67,15 @@ class _MainPageState extends State<MainPage> {
     MineView(),
   ];
 
+  // 用户信息
+  final UserController _userController = Get.put(UserController());
+
+  @override
+  void initState() {
+    super.initState();
+    _initUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,5 +93,14 @@ class _MainPageState extends State<MainPage> {
         },
       ),
     );
+  }
+
+  // 初始化用户
+  void _initUser() async {
+    // 初始化token
+    await tokenManager.init();
+    if(tokenManager.getToken().isNotEmpty) {
+      _userController.updateUserInfo(await userProfileApi());
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/api/user.dart';
+import 'package:flutter_learning/stores/TokenManager.dart';
 import 'package:flutter_learning/stores/UserController.dart';
 import 'package:flutter_learning/utils/ToastUtils.dart';
 import 'package:get/get.dart';
@@ -78,6 +79,8 @@ class _LoginPageState extends State<LoginPage> {
       });
       // 更新getx共享用户信息
       _usercontroller.updateUserInfo(res);
+      // 将token信息持久化
+      tokenManager.setToken(_usercontroller.user.value.token);
       ToastUtils.showToast(context, "登录成功");
       Navigator.of(context).pop(); // 返回上个页面
     } catch (e) {

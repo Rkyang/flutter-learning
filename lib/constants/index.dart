@@ -6,6 +6,8 @@ class GlobalConstants {
   static const int timeOut = 10;
   /// 请求响应成功状态码
   static const String successCode = '1';
+  /// token的key
+  static const String tokenKey = 'shop-token';
 }
 
 /// 请求路径常量
@@ -18,4 +20,5 @@ class HttpUrlConstants {
   static const String recommendList = '/home/recommend'; // 推荐列表
   static const String guessList = '/home/goods/guessLike'; // 猜你喜欢
   static const String login = '/login'; // 登录
+  static const String userProfile = '/member/profile'; // 用户信息
 }

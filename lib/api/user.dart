@@ -5,3 +5,7 @@ import 'package:flutter_learning/viewmodels/user.dart';
 Future<UserInfo> login(Map<String, dynamic> data) async {
   return UserInfo.fromJSON(await dioUtil.post(HttpUrlConstants.login, data: data) as Map<String, dynamic>);
 }
+
+Future<UserInfo> userProfileApi() async {
+  return UserInfo.fromJSON(await dioUtil.get(HttpUrlConstants.userProfile,) as Map<String, dynamic>);
+}

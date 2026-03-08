@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_learning/constants/index.dart';
+import 'package:flutter_learning/stores/TokenManager.dart';
 
 class DioUtil {
   final _dio = Dio();
@@ -18,6 +19,12 @@ class DioUtil {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (request, handle) {
+          // token 注入
+          if (tokenManager.getToken().isNotEmpty) {
+            request.headers = {
+              'Authorization': 'Bearer ${tokenManager.getToken()}'
+            };
+          }
           handle.next(request);
         },
         onResponse: (response, handler) {
