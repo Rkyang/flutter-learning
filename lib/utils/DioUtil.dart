@@ -28,7 +28,13 @@ class DioUtil {
           handler.reject(DioException(requestOptions: response.requestOptions));
         },
         onError: (error, handler) {
-          handler.reject(error);
+          // handler.reject(error);
+          handler.reject(
+            DioException(
+              requestOptions: error.requestOptions,
+              message: error.response?.data['msg'] ?? 'Failed',
+            ),
+          );
         },
       ),
     );
@@ -38,16 +44,23 @@ class DioUtil {
     return _responseHandle(_dio.get(url, queryParameters: params));
   }
 
+  Future<dynamic> post(String url, {Map<String, dynamic>? data}) {
+    return _responseHandle(_dio.post(url, data: data));
+  }
+
   /// 进一步处理返回结果
   Future<dynamic> _responseHandle(Future<Response<dynamic>> task) async {
-    final responseData = await task;
-    Map<String, dynamic> dataMap = responseData.data as Map<String, dynamic>;
-    String code = dataMap['code'];
-    if (code == GlobalConstants.successCode) {
-      // success
-      return dataMap['result'];
+    try {
+      final responseData = await task;
+      Map<String, dynamic> dataMap = responseData.data as Map<String, dynamic>;
+      String code = dataMap['code'];
+      if (code == GlobalConstants.successCode) {
+        // success
+        return dataMap['result'];
+      }
+    } catch (e) {
+      rethrow; // 不改变原来抛出的异常类型
     }
-    throw Exception(dataMap['msg'] ?? '加载异常');
   }
 }
 

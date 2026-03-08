@@ -17,4 +17,5 @@ class HttpUrlConstants {
   static const String allInOne = '/hot/oneStop'; // 一站买全
   static const String recommendList = '/home/recommend'; // 推荐列表
   static const String guessList = '/home/goods/guessLike'; // 猜你喜欢
+  static const String login = '/login'; // 登录
 }

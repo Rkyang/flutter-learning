@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/api/user.dart';
 import 'package:flutter_learning/utils/ToastUtils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -64,24 +66,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // final Logger _logger = Logger();
-  // Future<void> _login() async {
-  //   try {
-  //     LoadingDialog.show(context, msg: "登录中...");
-  //     final res = await loginAPI({
-  //       "account": _phoneController.text,
-  //       "password": _codeController.text,
-  //     });
-  //     // print("登录成功 ${res.toString()}");
-  //     _logger.i("登录成功 ${res.toString()}");
-  //     ToastUtils.showToast(context, "登录成功");
-  //     Navigator.of(context).pop(); // 返回上个页面
-  //   } catch (e) {
-  //     ToastUtils.showToast(context, e.toString());
-  //   } finally {
-  //     LoadingDialog.hide(context);
-  //   }
-  // }
+  Future<void> _login() async {
+    try {
+      await login({
+        "account": _phoneController.text,
+        "password": _codeController.text,
+      });
+      ToastUtils.showToast(context, "登录成功");
+      Navigator.of(context).pop(); // 返回上个页面
+    } catch (e) {
+      ToastUtils.showToast(context, (e as DioException).message ?? '登录失败');
+    }
+  }
 
   bool _isChecked = false;
   Widget _buildLoginButton() {
@@ -92,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           if (_key.currentState!.validate()) {
             if (_isChecked) {
-              // _login();
+              _login();
             } else {
               ToastUtils.showToast(context, "请勾选用户协议");
             }
