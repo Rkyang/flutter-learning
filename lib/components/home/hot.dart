@@ -6,6 +6,7 @@ class Hot extends StatefulWidget {
   final String subTitle;
   final Color backgroundColor;
   final SpecialOfferResult hotList;
+
   const Hot({
     super.key,
     required this.mainTitle,
@@ -22,6 +23,7 @@ class _HotState extends State<Hot> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
       height: 200,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
@@ -30,7 +32,7 @@ class _HotState extends State<Hot> {
       child: Column(
         children: [
           _getTopTitle(),
-          Row(children: [_getBottomRightContent()]),
+          Row(children: [_getBottomRightContent()],),
         ],
       ),
     );
@@ -38,7 +40,7 @@ class _HotState extends State<Hot> {
 
   Widget _getTopTitle() {
     return Padding(
-      padding: EdgeInsetsGeometry.only(top: 10, left: 10),
+      padding: EdgeInsetsGeometry.only(top: 10, left: 10, bottom: 10),
       child: Row(
         spacing: 10,
         children: [
@@ -68,40 +70,43 @@ class _HotState extends State<Hot> {
 
       return Expanded(
         child: Row(
+          spacing: 15,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(itemList.length, (index) {
-            return Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image(
-                    width: 100,
-                    height: 120,
-                    image: NetworkImage(itemList[index].picture),
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image(
-                        image: AssetImage('lib/assets/home_cmd_sm.png'),
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  width: 100,
-                  height: 20,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrange,
+            return Expanded(
+              child: Column(
+                children: [
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(10),
+                    child: Image(
+                      // width: 100,
+                      height: 120,
+                      image: NetworkImage(itemList[index].picture),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image(
+                          image: AssetImage('lib/assets/home_cmd_sm.png'),
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
                   ),
-                  child: Text(
-                    '￥${itemList[index].price}',
-                    style: TextStyle(color: Colors.white),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    // width: 100,
+                    height: 20,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '￥${itemList[index].price}',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }),
         ),
